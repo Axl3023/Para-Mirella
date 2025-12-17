@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Corazón Vibrante</title>
+  </head>
+
+  <body>
+    <main class="wrap">
+      <div class="heart-wrap">
+        <div
+          class="heart"
+          id="heart"
+          role="button"
+          aria-label="Toca el corazón"
+          tabindex="0"
+        >
+          <p class="heart__text">
+            Sé que no estamos pasando por un buen momento. Pero no olvides que
+            sigo aquí para ti.
+            <br /><br />
+            Atte. Tu uapo que te ama mucho.
+          </p>
+        </div>
+
+        <div class="overlay" id="overlay" hidden>
+          <button
+            class="overlay__close"
+            id="closeOverlay"
+            type="button"
+            aria-label="Cerrar"
+          >
+            ✕
+          </button>
+          <img class="overlay__img" src="monito.jpg" alt="Monito tierno" />
+        </div>
+
+        <!-- Brillitos tiernos (solo CSS) -->
+        <span class="spark s1" aria-hidden="true">✨</span>
+        <span class="spark s2" aria-hidden="true">✨</span>
+        <span class="spark s3" aria-hidden="true">✦</span>
+        <span class="spark s4" aria-hidden="true">✦</span>
+        <span class="spark s5" aria-hidden="true">✨</span>
+      </div>
+
+      <p class="hint">Toca el corazón 💗</p>
+
+      <section class="note" id="note" hidden>
+        <p>
+          Quiero que seas tú, Mirella...
+          <br /><strong>Una y mil veces.</strong>
+        </p>
+      </section>
+    </main>
+
+    <script>
+      const heart = document.getElementById("heart");
+      const note = document.getElementById("note");
+
+      const overlay = document.getElementById("overlay");
+      const closeOverlay = document.getElementById("closeOverlay");
+
+      function showNote() {
+        note.hidden = false;
+        note.classList.add("show");
+        heart.classList.add("pulse-once");
+        setTimeout(() => heart.classList.remove("pulse-once"), 450);
+      }
+
+      function hideNote() {
+        note.classList.remove("show");
+        setTimeout(() => (note.hidden = true), 180);
+      }
+
+      function showOverlay() {
+        overlay.hidden = false;
+        overlay.classList.add("show");
+      }
+
+      function hideOverlay() {
+        overlay.classList.remove("show");
+        setTimeout(() => (overlay.hidden = true), 180);
+      }
+
+      // Mostrar ambos (imagen + mensaje)
+      function openLove() {
+        showOverlay();
+        showNote();
+      }
+
+      // Ocultar ambos
+      function closeLove() {
+        hideOverlay();
+        hideNote();
+      }
+
+      // Toggle (si está abierto, cierra; si está cerrado, abre)
+      function toggleLove() {
+        if (overlay.hidden) openLove();
+        else closeLove();
+      }
+
+      // Al tocar el corazón: aparece imagen + mensaje
+      heart.addEventListener("click", toggleLove);
+      heart.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") toggleLove();
+      });
+
+      // Cerrar overlay con la X
+      closeOverlay.addEventListener("click", closeLove);
+
+      // Si tocan fuera de la imagen (el fondo oscuro), cierra
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) closeLove();
+      });
+    </script>
+  </body>
+</html>

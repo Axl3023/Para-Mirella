@@ -1,0 +1,219 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root{
+  --bg1:#0b1522;
+  --bg2:#070d16;
+  --pink:#f20044;
+  --heart: clamp(180px, 58vw, 270px);
+}
+
+body{
+  min-height: 100dvh;
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(1200px 600px at 50% 20%, #122744 0%, var(--bg1) 45%, var(--bg2) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+  color: #fff;
+}
+
+.wrap{
+  width: min(520px, 100%);
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  text-align: center;
+  min-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  place-content: center;
+}
+
+.heart-wrap{
+  position: relative;
+  width: var(--heart);
+  height: var(--heart);
+  display: grid;
+  place-items: center;
+  margin-top: 6px;
+}
+
+/* Corazón */
+.heart{
+  width: var(--heart);
+  height: var(--heart);
+  background-color: var(--pink);
+  position: relative;
+  transform: rotate(-45deg);
+  border-radius: 14px;
+  box-shadow: 0 18px 90px rgba(242,0,68,.45);
+  animation: heartBeat 0.75s ease-in-out infinite;
+  display: grid;
+  place-items: center;
+  padding: clamp(10px, 3.2vw, 14px);
+  cursor: pointer;
+  outline: none;
+}
+
+/* “brillito” suave sobre el corazón */
+.heart::marker { content: ""; }
+.heart::before,
+.heart::after{
+  content:"";
+  position:absolute;
+  width: var(--heart);
+  height: var(--heart);
+  background-color: var(--pink);
+  border-radius: 50%;
+}
+.heart::before{
+  top: -50%;
+  left: 0;
+  box-shadow: 0 -10px 70px rgba(242,0,68,.35);
+}
+.heart::after{
+  right: -50%;
+  top: 0;
+  box-shadow: 20px 20px 70px rgba(242,0,68,.28);
+}
+
+.heart__text{
+  position: absolute;
+  z-index: 2;
+  width: 110%;
+  transform: rotate(45deg) translateY(calc(var(--heart) * -0.22));
+  font-size: clamp(11px, 3.4vw, 14px);
+  line-height: 1.35;
+  padding: 0 8px;
+  text-shadow: 0 2px 14px rgba(0,0,0,.35);
+}
+
+/* Latido */
+@keyframes heartBeat{
+  0%   { transform: rotate(-45deg) scale(1.06); }
+  50%  { transform: rotate(-45deg) scale(0.98); }
+  100% { transform: rotate(-45deg) scale(1.06); }
+}
+
+/* Un latido extra cuando tocas */
+.pulse-once{
+  animation: heartTap 0.45s ease-in-out 1;
+}
+@keyframes heartTap{
+  0%   { transform: rotate(-45deg) scale(1.08); }
+  60%  { transform: rotate(-45deg) scale(0.96); }
+  100% { transform: rotate(-45deg) scale(1.06); }
+}
+
+/* Brillitos alrededor */
+.spark{
+  position: absolute;
+  font-size: clamp(12px, 4vw, 16px);
+  opacity: 0.75;
+  filter: drop-shadow(0 8px 20px rgba(255,255,255,.18));
+  animation: floaty 2.8s ease-in-out infinite;
+  user-select: none;
+}
+@keyframes floaty{
+  0%,100% { transform: translateY(0) scale(1); opacity: .7; }
+  50%     { transform: translateY(-12px) scale(1.06); opacity: .95; }
+}
+
+.s1{ top: -6px; left: 10px; animation-delay: .0s; }
+.s2{ top: 12px; right: -4px; animation-delay: .6s; }
+.s3{ bottom: 10px; left: -6px; animation-delay: .9s; }
+.s4{ bottom: -6px; right: 16px; animation-delay: .3s; }
+.s5{ top: 50%; left: -14px; animation-delay: 1.2s; }
+
+.hint{
+  font-size: clamp(12px, 3.6vw, 14px);
+  opacity: 0.9;
+}
+
+.note{
+  width: min(520px, 100%);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  padding: 12px 14px;
+  backdrop-filter: blur(8px);
+  transform: translateY(-6px);
+  opacity: 0;
+  transition: opacity .18s ease, transform .18s ease;
+}
+.note.show{
+  opacity: 1;
+  transform: translateY(0);
+}
+.note p{
+  font-size: clamp(12px, 3.6vw, 14px);
+  line-height: 1.4;
+}
+
+/* Botón tierno */
+.hug-btn{
+  width: 100%;
+  max-width: 320px;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #fff;
+  background: rgba(242,0,68,.92);
+  box-shadow: 0 12px 40px rgba(242,0,68,.25);
+  cursor: pointer;
+  transition: transform .12s ease, opacity .12s ease;
+}
+.hug-btn:active{ transform: scale(0.98); opacity: .95; }
+
+/* Accesibilidad: si el usuario prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce){
+  .heart, .spark{ animation: none; }
+  .note{ transition: none; }
+}
+
+/* Overlay imagen sobre el corazón */
+.overlay{
+  position: absolute;
+  inset: -10px;              /* un poquito más grande que el corazón */
+  z-index: 999;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  background: rgba(0,0,0,.35);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: scale(.98);
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+.overlay.show{
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.overlay__img{
+  width: 92%;
+  height: 92%;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 18px 70px rgba(0,0,0,.35);
+}
+
+.overlay__close{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  color: #fff;
+  background: rgba(0,0,0,.45);
+  font-size: 16px;
+}
+.overlay__close:active{
+  transform: scale(.98);
+}
